@@ -16,6 +16,11 @@ class Person(models.Model):
 
 class Employee(Person):
     '''Employee table'''
+    first_name = models.CharField(max_length=80)
+    last_name = models.CharField(max_length=80)
+    phone = models.IntegerField(max_length=12)
+    email = models.EmailField(max_length=50)
+    passport_number = models.IntegerField(max_length=11)
 
 
 class Institute(models.Model):
@@ -66,7 +71,11 @@ class Trip(models.Model):
 
 
 class TripExpense(models.Model):
-    pass
+
+    amount = models.DecimalField()
+    date = models.DateTimeField()
+    reason = models.ForeignKey(ExpenseType,on_delete=models.CASCADE)
+    
 
 
 class ExpenseType(models.Model):
