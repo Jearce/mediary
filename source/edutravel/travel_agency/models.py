@@ -122,18 +122,22 @@ class Invoice(models.Model):
     trip = models.ForeignKey(Trip,on_delete=models.CASCADE)
     total_amount = models.FloatField()
     paid = models.BooleanField()
+    status = model.ForeignKey(Status, on_delete=models.CASCADE)
     payment_plan = models.ForeignKey(PaymentPlan,on_delete=models.CASCADE)
 
 
-class PaymentStatus(models.Model):
+class Status(models.Model):
     status = models.CharField(max_length=80)
+
+    def __str__(self):
+        return self.status
 
 
 class Payment(models.Model):
     invoice = models.ForeignKey(Invoice,on_delete=models.CASCADE)
     amount = models.DecimalField()
     payment_type = models.CharField(max_length=12)
-    payment_status = models.ForeignKey(PaymentStatus,on_delete=models.CASCADE)
+    payment_status = models.ForeignKey(Status,on_delete=models.CASCADE)
 
 
 class Booking(models.Model):
@@ -156,6 +160,12 @@ class Traveler(Person):
     '''
     insitute = models.ForeignKey(Institute,on_delete=models.CASCADE)
     trips = models.ManyToManyField(Trip,through="TripRegistration")
+    first_name = models.CharField(max_length=80)
+    last_name = models.CharField(max_length=80)
+    phone = models.IntegerField(max_length=12)
+    passport_number = models.IntegerField(max_length=11)
+    email = models.EmailField(max_length=50)
+
 
 
 class TripHistory(models.Model):
@@ -178,6 +188,7 @@ class TripRegistration(models.Model):
 class Department(models.Model):
 
     name = models.CharField(max_length=80)
+    institute = models.ForeignKey(Institute,on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name
@@ -198,20 +209,30 @@ class Majors(models.Model):
     '''
     major =  models.CharField(max_length=80)
 
+class GradeLevel(models.Model):
+    ''' abstracted the grade_level array into another table to meet min table quota '''
+    title = models.CharField(max_length=20)
+    min_credits = models.IntegerField()
+    max_credits = models.IntegerField()
+
+    def __str__(self):
+        return self.title
+
 
 class Student(Person):
     '''
 
     '''
 
-    years_in_school = [
+    '''years_in_school = [
         ('FR','Freshman'),
         ('SO','Sophomore'),
         ('JR','Junior'),
         ('SR','Senior'),
         ('GR','Graduate')
-    ]
+    ]'''
 
     traveler = models.ForeignKey(Traveler,on_delete=models.CASCADE)
     declared_major = models.ForeignKey(Majors,on_delete=models.CASCADE)
-    grade_level = models.CharField(max_length=2,choices=years_in_school)
+    '''grade_level = models.CharField(max_length=2,choices=years_in_school)'''
+    grade_level = models.ForeignKey(GradeLevel,on_delete=models.CASCADE)
