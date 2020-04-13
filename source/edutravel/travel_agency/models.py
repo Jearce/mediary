@@ -77,10 +77,13 @@ class ExpenseType(models.Model):
 
 class TripExpense(models.Model):
 
-    amount = models.DecimalField()
+    amount = models.DecimalField(max_digits=6,decimal_places=2)
     date = models.DateTimeField()
     reason = models.ForeignKey(ExpenseType,on_delete=models.CASCADE)
-    
+
+    def __str__(self):
+        return self.amount
+
 class RequestForProposal(models.Model):
     '''
     Many request for proposals (RFP) can be
@@ -209,12 +212,10 @@ class TripRegistration(models.Model):
 
 class Department(models.Model):
     '''
-    Axiliary table for institute facultu model.
+    Axiliary table for institute faculty model.
 
     '''
-
     name = models.CharField(max_length=80)
-    institute = models.ForeignKey(Institute,on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name
@@ -253,17 +254,8 @@ class Student(Person):
 
     '''
 
-    '''years_in_school = [
-        ('FR','Freshman'),
-        ('SO','Sophomore'),
-        ('JR','Junior'),
-        ('SR','Senior'),
-        ('GR','Graduate')
-    ]'''
-
     traveler = models.OneToOneField(Traveler,on_delete=models.CASCADE)
     declared_major = models.ForeignKey(Majors,on_delete=models.CASCADE)
-    '''grade_level = models.CharField(max_length=2,choices=years_in_school)'''
     grade_level = models.ForeignKey(GradeLevel,on_delete=models.CASCADE)
 
 class LanguageCode(models.Model):
@@ -300,7 +292,7 @@ class City(models.Model):
     subdivision = models.ForeignKey(Subdivision, on_delete=models.CASCADE)
     latitude = models.FloatField()
     longitude = models.FloatField()
-    Name = models.CharField()
+    name = models.CharField(max_length=120)
 
 class TripCity(models.Model):
     trip = models.ForeignKey(Trip,on_delete=models.CASCADE)
