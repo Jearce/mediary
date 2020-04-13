@@ -379,6 +379,7 @@ class LocalTransportation(models.Model):
 
 class Itinerary(models.Model):
     trip = models.ForeignKey(Trip,on_delete=models.CASCADE)
+    lodging = models.ForeignKey(LocalLodging, on_delete=models.CASCADE)
     first_destination = models.ManyToManyField(LocalAttraction, through="AttractionDestination")
     first_destination_start_time = models.DateTimeField()
     first_destination_end_time = models.DateTimeField()
