@@ -17,6 +17,119 @@ class Person(models.Model):
     def __str__(self):
         return self.first_name + " " + self.last_name
 
+##################################################
+# The user will base trip on the
+# available local attractions from
+# a given city.
+##################################################
+
+
+class LanguageCode(models.Model):
+    name = models.CharField(max_length=80)
+    short_code = models.CharField(max_length=3)
+
+    def __str__(self):
+        return self.name
+
+class Country(models.Model):
+    '''
+    Contains the list of Counties
+    '''
+    name = models.CharField(max_length=80)
+    latitude = models.FloatField()
+    longitude = models.FloatField()
+    primary_language = models.ForeignKey(LanguageCode,on_delete=models.CASCADE)
+    capital = models.CharField(max_length=80)
+    hemisphere = models.CharField(max_length=8)
+
+    def __str__(self):
+        return self.name
+
+class Subdivision(models.Model):
+    country = models.ForeignKey(Country,on_delete=models.CASCADE)
+    latitude = models.FloatField()
+    longitude = models.FloatField()
+    name = models.CharField(max_length=80)
+
+    def __str__(self):
+        return self.name
+
+class City(models.Model):
+    subdivision = models.ForeignKey(Subdivision, on_delete=models.CASCADE)
+    latitude = models.FloatField()
+    longitude = models.FloatField()
+    name = models.CharField(max_length=120)
+
+    def __str__(self):
+        return self.name
+
+class ZipCode(models.Model):
+    zip_code = models.IntegerField()
+
+    def __str__(self):
+        return self.zip_code
+
+class TypeTable(models.Model):
+    name = models.CharField(max_length=80)
+    entity = models.CharField(max_length=80)
+
+    def __str__(self):
+        return self.name
+
+class LocalLodging(models.Model):
+    city = models.ForeignKey(City, on_delete=models.CASCADE)
+    lodging_type = models.ForeignKey(TypeTable, on_delete=models.CASCADE, limit_choices_to={'entity': 'LocalLodging'})
+    street_address = models.CharField(max_length=80)
+    zip_code = models.ForeignKey(ZipCode, on_delete=models.CASCADE)
+    name = models.CharField(max_length=80)
+    rating = models.DecimalField(max_digits=2, decimal_places=1)
+
+    def __str__(self):
+        return self.name
+
+class Industry(models.Model):
+    industry = models.CharField(max_length=80)
+
+    def __str__(self):
+        return self.industry
+
+class LocalAttraction(models.Model):
+    city = models.ForeignKey(City, on_delete=models.CASCADE)
+    business_type = models.ForeignKey(TypeTable, on_delete=models.CASCADE, limit_choices_to={'entity': 'LocalBusiness'})
+    name = models.CharField(max_length=80)
+    industry = models.ForeignKey(Industry,on_delete=models.CASCADE)
+    street_address = models.CharField(max_length=80)
+    zip_code = models.ForeignKey(ZipCode, on_delete=models.CASCADE)
+    is_active = models.BooleanField(default='true')
+
+    def __str__(self):
+        return self.name
+
+class GuideSpecialty(models.Model):
+    specialty = models.CharField(max_length=80)
+
+    def __str__(self):
+        return self.specialty
+
+class LocalGuide(Person):
+    city = models.ForeignKey(City,on_delete=models.CASCADE)
+    specialty = models.ForeignKey(GuideSpecialty,on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.first_name + " " + self.last_name
+
+class LocalTransportation(models.Model):
+    city = models.ForeignKey(City, on_delete=models.CASCADE)
+    name = models.CharField(max_length=80)
+    open_time = models.TimeField()
+    close_time = models.TimeField()
+    transport_type = models.ForeignKey(TypeTable,on_delete=models.CASCADE, limit_choices_to={'entity':'LocalTransportation'})
+
+##################################################
+# Trip is organized with
+# the following  models.
+##################################################
+
 class Employee(Person):
     '''Employee table'''
 
@@ -59,6 +172,7 @@ class Trip(models.Model):
     start_date = models.DateField()
     end_date = models.DateField()
     institutes = models.ManyToManyField(Institute,through="Booking")
+    cities = models.ManyToManyField(City,through="TripCity")
     destinations = models.IntegerField()
 
     def __str__(self):
@@ -258,130 +372,38 @@ class Student(Person):
     declared_major = models.ForeignKey(Majors,on_delete=models.CASCADE)
     grade_level = models.ForeignKey(GradeLevel,on_delete=models.CASCADE)
 
-class LanguageCode(models.Model):
-    name = models.CharField(max_length=80)
-    short_code = models.CharField(max_length=3)
-
-    def __str__(self):
-        return self.name
-
-class Country(models.Model):
-    '''
-    Contains the list of Counties
-    '''
-    name = models.CharField(max_length=80)
-    latitude = models.FloatField()
-    longitude = models.FloatField()
-    primary_language = models.ForeignKey(LanguageCode,on_delete=models.CASCADE)
-    capital = models.CharField(max_length=80)
-    hemisphere = models.CharField(max_length=8)
-
-    def __str__(self):
-        return self.name
-
-class Subdivision(models.Model):
-    country = models.ForeignKey(Country,on_delete=models.CASCADE)
-    latitude = models.FloatField()
-    longitude = models.FloatField()
-    name = models.CharField(max_length=80)
-
-    def __str__(self):
-        return self.name
-
-class City(models.Model):
-    subdivision = models.ForeignKey(Subdivision, on_delete=models.CASCADE)
-    latitude = models.FloatField()
-    longitude = models.FloatField()
-    name = models.CharField(max_length=120)
-
 class TripCity(models.Model):
+    '''
+    Trip can visit a city and will have to choose lodging, local guide,
+    and transportation.
+
+    '''
     trip = models.ForeignKey(Trip,on_delete=models.CASCADE)
     city = models.ForeignKey(City, on_delete=models.CASCADE)
-
-class ZipCode(models.Model):
-    zip_code = models.IntegerField()
-
-    def __str__(self):
-        return self.zip_code
-
-class TypeTable(models.Model):
-    name = models.CharField(max_length=80)
-    entity = models.CharField(max_length=80)
-
-    def __str__(self):
-        return self.name
-'''
-class LodgingType(models.Model):
-    merged into TypeTables
-'''
-
-class LocalLodging(models.Model):
-    city = models.ForeignKey(City, on_delete=models.CASCADE)
-    lodging_type = models.ForeignKey(TypeTable, on_delete=models.CASCADE, limit_choices_to={'entity': 'LocalLodging'})
-    street_address = models.CharField(max_length=80)
-    zip_code = models.ForeignKey(ZipCode, on_delete=models.CASCADE)
-    name = models.CharField(max_length=80)
-    rating = models.DecimalField(max_digits=2, decimal_places=1)
-
-    def __str__(self):
-        return self.name
-
-'''
-class BusinessType(models.Model):
-    merged into TypeTables
-'''
-class Industry(models.Model):
-    industry = models.CharField(max_length=80)
-
-    def __str__(self):
-        return self.industry
-
-class LocalAttraction(models.Model):
-    city = models.ForeignKey(City, on_delete=models.CASCADE)
-    business_type = models.ForeignKey(TypeTable, on_delete=models.CASCADE, limit_choices_to={'entity': 'LocalBusiness'})
-    name = models.CharField(max_length=80)
-    industry = models.ForeignKey(Industry,on_delete=models.CASCADE)
-    street_address = models.CharField(max_length=80)
-    zip_code = models.ForeignKey(ZipCode, on_delete=models.CASCADE)
-    is_active = models.BooleanField(default='true')
-
-class GuideSpecialty(models.Model):
-    specialty = models.CharField(max_length=80)
-
-    def __str__(self):
-        return self.specialty
-
-class LocalGuide(Person):
-    city = models.ForeignKey(City,on_delete=models.CASCADE)
-    specialty = models.ForeignKey(GuideSpecialty,on_delete=models.CASCADE)
-
-    def __str__(self):
-        return self.first_name + " " + self.last_name
-
-'''
-class transportationType(models.Model):
-    merged into TypeTables
-'''
-class LocalTransportation(models.Model):
-    city = models.ForeignKey(City, on_delete=models.CASCADE)
-    name = models.CharField(max_length=80)
-    open_time = models.TimeField()
-    close_time = models.TimeField()
-    type = models.ForeignKey(TypeTable,on_delete=models.CASCADE, limit_choices_to={'entity':'LocalTransportation'})
-
-class Itinerary(models.Model):
-    trip = models.ForeignKey(Trip,on_delete=models.CASCADE)
     lodging = models.ForeignKey(LocalLodging, on_delete=models.CASCADE)
-    first_destination = models.ManyToManyField(LocalAttraction, through="AttractionDestination")
-    first_destination_start_time = models.DateTimeField()
-    first_destination_end_time = models.DateTimeField()
-    second_destination = models.ManyToManyField(LocalAttraction, through="AttractionDestination")
-    second_destination_start_time = models.DateTimeField()
-    second_destination_end_time = models.DateTimeField()
-    third_destination = models.ManyToManyField(LocalAttraction, through="AttractionDestination")
-    third_destination_start_time = models.DateTimeField()
-    third_destination_end_time = models.DateTimeField()
+    guide = models.ForeignKey(LocalGuide, on_delete=models.CASCADE)
+    transportation = models.ForeignKey(LocalTransportation, on_delete=models.CASCADE)
+
+#class Itinerary(models.Model):
+    '''
+    Duplicate many to many fields. Itinerary can be a generated table from other tables after user is done
+    selecting options.
+
+    '''
+#    trip = models.ForeignKey(Trip,on_delete=models.CASCADE)
+#    lodging = models.ForeignKey(LocalLodging, on_delete=models.CASCADE)
+#    first_destination = models.ManyToManyField(LocalAttraction, through="AttractionDestination")
+#    first_destination_start_time = models.DateTimeField()
+#    first_destination_end_time = models.DateTimeField()
+#    second_destination = models.ManyToManyField(LocalAttraction, through="AttractionDestination")
+#    second_destination_start_time = models.DateTimeField()
+#    second_destination_end_time = models.DateTimeField()
+#    third_destination = models.ManyToManyField(LocalAttraction, through="AttractionDestination")
+#    third_destination_start_time = models.DateTimeField()
+#    third_destination_end_time = models.DateTimeField()
 
 class AttractionDestination(models.Model):
-    itenerary = models.ForeignKey(Itinerary, on_delete=models.CASCADE)
+    #itenerary = models.ForeignKey(Itinerary, on_delete=models.CASCADE)
     local_attraction = models.ForeignKey(LocalAttraction, on_delete=models.CASCADE)
+    start_date = models.DateTimeField()
+    end_date = models.DateTimeField()
