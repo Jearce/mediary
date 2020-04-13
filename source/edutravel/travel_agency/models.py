@@ -5,7 +5,6 @@ class Person(models.Model):
     Parent class Employee,Traveler, and InstituteFaculty.
 
     '''
-
     first_name = models.CharField(max_length=80)
     last_name = models.CharField(max_length=80)
     email = models.EmailField()
@@ -20,7 +19,6 @@ class Person(models.Model):
 
 class Employee(Person):
     '''Employee table'''
-
 
 class Institute(models.Model):
     '''
@@ -39,7 +37,6 @@ class Institute(models.Model):
     def __str__(self):
         return self.name
 
-
 class InstituteType(models.Model):
     '''
     Axiliary table for Institute model.
@@ -49,7 +46,6 @@ class InstituteType(models.Model):
 
     def __str__(self):
         return self.institute_type
-
 
 class Trip(models.Model):
     '''
@@ -63,14 +59,10 @@ class Trip(models.Model):
     start_date = models.DateField()
     end_date = models.DateField()
     institutes = models.ManyToManyField(Institute,through="Booking")
+    destinations = models.IntegerField()
 
     def __str__(self):
         return self.name
-
-
-class TripExpense(models.Model):
-    pass
-
 
 class ExpenseType(models.Model):
     '''
@@ -83,7 +75,12 @@ class ExpenseType(models.Model):
     def __str__(self):
         return self.expense_type
 
+class TripExpense(models.Model):
 
+    amount = models.DecimalField()
+    date = models.DateTimeField()
+    reason = models.ForeignKey(ExpenseType,on_delete=models.CASCADE)
+    
 class RequestForProposal(models.Model):
     '''
     Many request for proposals (RFP) can be
@@ -104,7 +101,6 @@ class RequestForProposal(models.Model):
     def __str__(self):
         return self.name
 
-
 class Bid(models.Model):
     '''
     Associative table
@@ -118,31 +114,20 @@ class Bid(models.Model):
     amount = models.DecimalField(max_digits=6,decimal_places=2)
     accepted = models.BooleanField()
 
-
 class PaymentPlan(models.Model):
     '''
     Axiliary table for Invoice model.
 
     '''
     plan = models.CharField(max_length=80)
+    number_of_payments = models.IntegerField()
+
 
     def __str__(self):
         return self.plan
 
-class Invoice(models.Model):
+class Status(models.Model):
     '''
-    Many invoices can be made for a trip.
-
-    '''
-    trip = models.ForeignKey(Trip,on_delete=models.CASCADE)
-    total_amount = models.FloatField()
-    paid = models.BooleanField()
-    payment_plan = models.ForeignKey(PaymentPlan,on_delete=models.CASCADE)
-
-
-class PaymentStatus(models.Model):
-    '''
-
     Axiliary table for Payment model.
 
     '''
@@ -151,6 +136,16 @@ class PaymentStatus(models.Model):
     def __str__(self):
         return self.status
 
+class Invoice(models.Model):
+    '''
+    Many invoices can be made for a trip.
+
+    '''
+    trip = models.ForeignKey(Trip,on_delete=models.CASCADE)
+    total_amount = models.FloatField()
+    paid = models.BooleanField(default=False)
+    status = models.ForeignKey(Status, on_delete=models.CASCADE)
+    payment_plan = models.ForeignKey(PaymentPlan,on_delete=models.CASCADE)
 
 class Payment(models.Model):
     '''
@@ -160,7 +155,7 @@ class Payment(models.Model):
     invoice = models.ForeignKey(Invoice,on_delete=models.CASCADE)
     amount = models.DecimalField(max_digits=6,decimal_places=2)
     payment_type = models.CharField(max_length=12)
-    payment_status = models.ForeignKey(PaymentStatus,on_delete=models.CASCADE)
+    payment_status = models.ForeignKey(Status,on_delete=models.CASCADE)
 
     def __str__(self):
         return self.amount
@@ -212,7 +207,6 @@ class TripRegistration(models.Model):
     trip = models.ForeignKey(Trip,on_delete=models.CASCADE)
     travler = models.ForeignKey(Traveler,on_delete=models.CASCADE)
 
-
 class Department(models.Model):
     '''
     Axiliary table for institute facultu model.
@@ -220,10 +214,10 @@ class Department(models.Model):
     '''
 
     name = models.CharField(max_length=80)
+    institute = models.ForeignKey(Institute,on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name
-
 
 class InstituteFaculty(Person):
     '''
@@ -233,7 +227,6 @@ class InstituteFaculty(Person):
     traveler = models.OneToOneField(Traveler,on_delete=models.CASCADE)
     title = models.CharField(max_length=80)
     department = models.ForeignKey(Department,on_delete=models.CASCADE)
-
 
 class Majors(models.Model):
     '''
@@ -245,6 +238,14 @@ class Majors(models.Model):
     def __str__(self):
         return self.major
 
+class GradeLevel(models.Model):
+    ''' abstracted the grade_level array into another table to meet min table quota '''
+    title = models.CharField(max_length=20)
+    min_credits = models.IntegerField()
+    max_credits = models.IntegerField()
+
+    def __str__(self):
+        return self.title
 
 class Student(Person):
     '''
@@ -252,14 +253,126 @@ class Student(Person):
 
     '''
 
-    years_in_school = [
+    '''years_in_school = [
         ('FR','Freshman'),
         ('SO','Sophomore'),
         ('JR','Junior'),
         ('SR','Senior'),
         ('GR','Graduate')
-    ]
+    ]'''
 
     traveler = models.OneToOneField(Traveler,on_delete=models.CASCADE)
     declared_major = models.ForeignKey(Majors,on_delete=models.CASCADE)
-    grade_level = models.CharField(max_length=2,choices=years_in_school)
+    '''grade_level = models.CharField(max_length=2,choices=years_in_school)'''
+    grade_level = models.ForeignKey(GradeLevel,on_delete=models.CASCADE)
+
+class LanguageCode(models.Model):
+    name = models.CharField(max_length=80)
+    short_code = models.CharField(max_length=3)
+
+    def __str__(self):
+        return self.name
+
+class Country(models.Model):
+    '''
+    Contains the list of Counties
+    '''
+    name = models.CharField(max_length=80)
+    latitude = models.FloatField()
+    longitude = models.FloatField()
+    primary_language = models.ForeignKey(LanguageCode,on_delete=models.CASCADE)
+    capital = models.CharField(max_length=80)
+    hemisphere = models.CharField(max_length=8)
+
+    def __str__(self):
+        return self.name
+
+class Subdivision(models.Model):
+    country = models.ForeignKey(Country,on_delete=models.CASCADE)
+    latitude = models.FloatField()
+    longitude = models.FloatField()
+    name = models.CharField(max_length=80)
+
+    def __str__(self):
+        return self.name
+
+class City(models.Model):
+    subdivision = models.ForeignKey(Subdivision, on_delete=models.CASCADE)
+    latitude = models.FloatField()
+    longitude = models.FloatField()
+    Name = models.CharField()
+
+class TripCity(models.Model):
+    trip = models.ForeignKey(Trip,on_delete=models.CASCADE)
+    city = models.ForeignKey(City, on_delete=models.CASCADE)
+
+class ZipCode(models.Model):
+    zip_code = models.IntegerField()
+
+    def __str__(self):
+        return self.zip_code
+
+class TypeTable(models.Model):
+    name = models.CharField(max_length=80)
+    entity = models.CharField(max_length=80)
+
+    def __str__(self):
+        return self.name
+'''
+class LodgingType(models.Model):
+    merged into TypeTables
+'''
+
+class LocalLodging(models.Model):
+    city = models.ForeignKey(City, on_delete=models.CASCADE)
+    lodging_type = models.ForeignKey(TypeTable, on_delete=models.CASCADE, limit_choices_to={'entity': 'LocalLodging'})
+    street_address = models.CharField(max_length=80)
+    zip_code = models.ForeignKey(ZipCode, on_delete=models.CASCADE)
+    name = models.CharField(max_length=80)
+    rating = models.DecimalField(max_digits=2, decimal_places=1)
+
+    def __str__(self):
+        return self.name
+
+'''
+class BusinessType(models.Model):
+    merged into TypeTables
+'''
+class Industry(models.Model):
+    industry = models.CharField(max_length=80)
+
+    def __str__(self):
+        return self.industry
+
+class LocalBusiness(models.Model):
+    city = models.ForeignKey(City, on_delete=models.CASCADE)
+    business_type = models.ForeignKey(TypeTable, on_delete=models.CASCADE, limit_choices_to={'entity': 'LocalBusiness'})
+    name = models.CharField(max_length=80)
+    industry = models.ForeignKey(Industry,on_delete=models.CASCADE)
+    street_address = models.CharField(max_length=80)
+    zip_code = models.ForeignKey(ZipCode, on_delete=models.CASCADE)
+    is_active = models.BooleanField(default='true')
+
+class GuideSpecialty(models.Model):
+    specialty = models.CharField(max_length=80)
+
+    def __str__(self):
+        return self.specialty
+
+class LocalGuide(Person):
+    city = models.ForeignKey(City,on_delete=models.CASCADE)
+    specialty = models.ForeignKey(GuideSpecialty,on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.first_name + " " + self.last_name
+
+'''
+class transportationType(models.Model):
+    merged into TypeTables
+'''
+class LocalTransportation(models.Model):
+    city = models.ForeignKey(City, on_delete=models.CASCADE)
+    name = models.CharField(max_length=80)
+    open_time = models.TimeField()
+    close_time = models.TimeField()
+    type = models.ForeignKey(TypeTable,on_delete=models.CASCADE, limit_choices_to={'entity':'LocalTransportation'})
