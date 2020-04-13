@@ -5,7 +5,6 @@ class Person(models.Model):
     Parent class Employee,Traveler, and InstituteFaculty.
 
     '''
-
     first_name = models.CharField(max_length=80)
     last_name = models.CharField(max_length=80)
     email = models.EmailField()
@@ -20,7 +19,6 @@ class Person(models.Model):
 
 class Employee(Person):
     '''Employee table'''
-
 
 class Institute(models.Model):
     '''
@@ -39,7 +37,6 @@ class Institute(models.Model):
     def __str__(self):
         return self.name
 
-
 class InstituteType(models.Model):
     '''
     Axiliary table for Institute model.
@@ -49,7 +46,6 @@ class InstituteType(models.Model):
 
     def __str__(self):
         return self.institute_type
-
 
 class Trip(models.Model):
     '''
@@ -85,10 +81,6 @@ class TripExpense(models.Model):
     date = models.DateTimeField()
     reason = models.ForeignKey(ExpenseType,on_delete=models.CASCADE)
     
-
-
-
-
 class RequestForProposal(models.Model):
     '''
     Many request for proposals (RFP) can be
@@ -109,7 +101,6 @@ class RequestForProposal(models.Model):
     def __str__(self):
         return self.name
 
-
 class Bid(models.Model):
     '''
     Associative table
@@ -122,7 +113,6 @@ class Bid(models.Model):
     rfp = models.ForeignKey(RequestForProposal,on_delete=models.CASCADE)
     amount = models.DecimalField(max_digits=6,decimal_places=2)
     accepted = models.BooleanField()
-
 
 class PaymentPlan(models.Model):
     '''
@@ -196,7 +186,6 @@ class Traveler(Person):
     trips = models.ManyToManyField(Trip,through="TripRegistration")
 
 
-
 class TripHistory(models.Model):
     '''
     A traveler will have a history of their trips.
@@ -218,7 +207,6 @@ class TripRegistration(models.Model):
     trip = models.ForeignKey(Trip,on_delete=models.CASCADE)
     travler = models.ForeignKey(Traveler,on_delete=models.CASCADE)
 
-
 class Department(models.Model):
     '''
     Axiliary table for institute facultu model.
@@ -231,7 +219,6 @@ class Department(models.Model):
     def __str__(self):
         return self.name
 
-
 class InstituteFaculty(Person):
     '''
     Child model of traveler
@@ -240,7 +227,6 @@ class InstituteFaculty(Person):
     traveler = models.OneToOneField(Traveler,on_delete=models.CASCADE)
     title = models.CharField(max_length=80)
     department = models.ForeignKey(Department,on_delete=models.CASCADE)
-
 
 class Majors(models.Model):
     '''
@@ -252,7 +238,6 @@ class Majors(models.Model):
     def __str__(self):
         return self.major
 
-
 class GradeLevel(models.Model):
     ''' abstracted the grade_level array into another table to meet min table quota '''
     title = models.CharField(max_length=20)
@@ -261,8 +246,6 @@ class GradeLevel(models.Model):
 
     def __str__(self):
         return self.title
-
-
 
 class Student(Person):
     '''
@@ -369,8 +352,6 @@ class LocalBusiness(models.Model):
     street_address = models.CharField(max_length=80)
     zip_code = models.ForeignKey(ZipCode, on_delete=models.CASCADE)
     is_active = models.BooleanField(default='true')
-
-
 
 class GuideSpecialty(models.Model):
     specialty = models.CharField(max_length=80)
