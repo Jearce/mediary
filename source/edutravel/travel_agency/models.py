@@ -20,11 +20,6 @@ class Person(models.Model):
 
 class Employee(Person):
     '''Employee table'''
-    first_name = models.CharField(max_length=80)
-    last_name = models.CharField(max_length=80)
-    phone = models.IntegerField(max_length=12)
-    email = models.EmailField(max_length=50)
-    passport_number = models.IntegerField(max_length=11)
 
 
 class Institute(models.Model):
@@ -73,15 +68,6 @@ class Trip(models.Model):
     def __str__(self):
         return self.name
 
-
-class TripExpense(models.Model):
-
-    amount = models.DecimalField()
-    date = models.DateTimeField()
-    reason = models.ForeignKey(ExpenseType,on_delete=models.CASCADE)
-    
-
-
 class ExpenseType(models.Model):
     '''
     Axiliary table for TripExpense Model.
@@ -92,6 +78,15 @@ class ExpenseType(models.Model):
 
     def __str__(self):
         return self.expense_type
+
+class TripExpense(models.Model):
+
+    amount = models.DecimalField()
+    date = models.DateTimeField()
+    reason = models.ForeignKey(ExpenseType,on_delete=models.CASCADE)
+    
+
+
 
 
 class RequestForProposal(models.Model):
@@ -141,19 +136,6 @@ class PaymentPlan(models.Model):
     def __str__(self):
         return self.plan
 
-class Invoice(models.Model):
-    '''
-    Many invoices can be made for a trip.
-
-    '''
-    trip = models.ForeignKey(Trip,on_delete=models.CASCADE)
-    total_amount = models.FloatField()
-    paid = models.BooleanField()
-    status = model.ForeignKey(Status, on_delete=models.CASCADE)
-    payment_plan = models.ForeignKey(PaymentPlan,on_delete=models.CASCADE)
-
-
-
 class Status(models.Model):
     '''
     Axiliary table for Payment model.
@@ -164,6 +146,16 @@ class Status(models.Model):
     def __str__(self):
         return self.status
 
+class Invoice(models.Model):
+    '''
+    Many invoices can be made for a trip.
+
+    '''
+    trip = models.ForeignKey(Trip,on_delete=models.CASCADE)
+    total_amount = models.FloatField()
+    paid = models.BooleanField(default=False)
+    status = models.ForeignKey(Status, on_delete=models.CASCADE)
+    payment_plan = models.ForeignKey(PaymentPlan,on_delete=models.CASCADE)
 
 class Payment(models.Model):
     '''
@@ -202,11 +194,6 @@ class Traveler(Person):
     '''
     institute = models.ForeignKey(Institute,on_delete=models.CASCADE)
     trips = models.ManyToManyField(Trip,through="TripRegistration")
-    first_name = models.CharField(max_length=80)
-    last_name = models.CharField(max_length=80)
-    phone = models.IntegerField(max_length=12)
-    passport_number = models.IntegerField(max_length=11)
-    email = models.EmailField(max_length=50)
 
 
 
@@ -262,6 +249,9 @@ class Majors(models.Model):
     '''
     major =  models.CharField(max_length=80)
 
+    def __str__(self):
+        return self.major
+
 
 class GradeLevel(models.Model):
     ''' abstracted the grade_level array into another table to meet min table quota '''
@@ -272,8 +262,6 @@ class GradeLevel(models.Model):
     def __str__(self):
         return self.title
 
-    def __str__(self):
-        return self.major
 
 
 class Student(Person):
@@ -354,7 +342,7 @@ class LodgingType(models.Model):
 
 class LocalLodging(models.Model):
     city = models.ForeignKey(City, on_delete=models.CASCADE)
-    lodging_type = models.ForeignKey(TypeTables, on_delete=models.CASCADE, limit_choices_to={'entity': 'LocalLodging'})
+    lodging_type = models.ForeignKey(TypeTable, on_delete=models.CASCADE, limit_choices_to={'entity': 'LocalLodging'})
     street_address = models.CharField(max_length=80)
     zip_code = models.ForeignKey(ZipCode, on_delete=models.CASCADE)
     name = models.CharField(max_length=80)
@@ -380,7 +368,7 @@ class LocalBusiness(models.Model):
     industry = models.ForeignKey(Industry,on_delete=models.CASCADE)
     street_address = models.CharField(max_length=80)
     zip_code = models.ForeignKey(ZipCode, on_delete=models.CASCADE)
-    is_active = models.BooleanField(default=true)
+    is_active = models.BooleanField(default='true')
 
 
 
@@ -393,10 +381,10 @@ class GuideSpecialty(models.Model):
 class LocalGuide(models.Model):
     first_name = models.CharField(max_length=80)
     last_name = models.CharField(max_length=80)
-    city = models.ForeignKey(CityAddress,on_delete=models.CASCADE)
+    city = models.ForeignKey(City,on_delete=models.CASCADE)
     phone = models.IntegerField()
     email = models.EmailField()
-    specialty = models.ForeignKey(Specialty,on_delete=models.CASCADE)
+    specialty = models.ForeignKey(GuideSpecialty,on_delete=models.CASCADE)
 
     def __str__(self):
         return self.first_name + " " + self.last_name
