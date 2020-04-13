@@ -359,12 +359,8 @@ class GuideSpecialty(models.Model):
     def __str__(self):
         return self.specialty
 
-class LocalGuide(models.Model):
-    first_name = models.CharField(max_length=80)
-    last_name = models.CharField(max_length=80)
+class LocalGuide(Person):
     city = models.ForeignKey(City,on_delete=models.CASCADE)
-    phone = models.IntegerField()
-    email = models.EmailField()
     specialty = models.ForeignKey(GuideSpecialty,on_delete=models.CASCADE)
 
     def __str__(self):
