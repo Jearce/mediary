@@ -336,7 +336,7 @@ class Industry(models.Model):
     def __str__(self):
         return self.industry
 
-class LocalBusiness(models.Model):
+class LocalAttraction(models.Model):
     city = models.ForeignKey(City, on_delete=models.CASCADE)
     business_type = models.ForeignKey(TypeTable, on_delete=models.CASCADE, limit_choices_to={'entity': 'LocalBusiness'})
     name = models.CharField(max_length=80)
@@ -368,3 +368,20 @@ class LocalTransportation(models.Model):
     open_time = models.TimeField()
     close_time = models.TimeField()
     type = models.ForeignKey(TypeTable,on_delete=models.CASCADE, limit_choices_to={'entity':'LocalTransportation'})
+
+class Itinerary(models.Model):
+    trip = models.ForeignKey(Trip,on_delete=models.CASCADE)
+    lodging = models.ForeignKey(LocalLodging, on_delete=models.CASCADE)
+    first_destination = models.ManyToManyField(LocalAttraction, through="AttractionDestination")
+    first_destination_start_time = models.DateTimeField()
+    first_destination_end_time = models.DateTimeField()
+    second_destination = models.ManyToManyField(LocalAttraction, through="AttractionDestination")
+    second_destination_start_time = models.DateTimeField()
+    second_destination_end_time = models.DateTimeField()
+    third_destination = models.ManyToManyField(LocalAttraction, through="AttractionDestination")
+    third_destination_start_time = models.DateTimeField()
+    third_destination_end_time = models.DateTimeField()
+
+class AttractionDestination(models.Model):
+    itenerary = models.ForeignKey(Itinerary, on_delete=models.CASCADE)
+    local_attraction = models.ForeignKey(LocalAttraction, on_delete=models.CASCADE)
