@@ -1,4 +1,4 @@
-ID,FirstName,LastName,Email,PassPort,Phone
+id,first_name,last_name,email,passport,phone_number
 1,Norman,Mabe,NormanMabe@gmail.com,36125882,501-719-2489
 2,Robert,Naquin,RobertNaquin@gmail.com,59201908,209-538-9340
 3,Brenda,Bejar,BrendaBejar@gmail.com,76774337,501-857-0886
