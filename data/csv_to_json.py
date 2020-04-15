@@ -33,6 +33,8 @@ def csv_to_json(file):
      writes a json file from a csv file.
 
     '''
+    #get basename
+    file = os.path.basename(file)
 
     #hold json folders
     fixtues_folder = '../source/edutravel/travel_agency/fixtures/'

@@ -60,7 +60,7 @@ class City(models.Model):
         return self.name
 
 class ZipCode(models.Model):
-    zip_code = models.IntegerField()
+    zip_code = models.CharField(max_length=80)
 
     def __str__(self):
         return self.zip_code
