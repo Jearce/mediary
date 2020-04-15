@@ -24,12 +24,13 @@ class Person(models.Model):
 ##################################################
 
 
-class LanguageCode(models.Model):
-    name = models.CharField(max_length=80)
-    short_code = models.CharField(max_length=3)
-
-    def __str__(self):
-        return self.name
+#class LanguageCode(models.Model):
+#    name = models.CharField(max_length=80)
+#    short_code = models.CharField(max_length=3)
+#
+#    def __str__(self):
+#        return self.name
+#
 
 class Country(models.Model):
     '''
