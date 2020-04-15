@@ -12,5 +12,5 @@ def plan_trip(request):
     return render(request, 'travel_agency/plan_trip.html')
 
 def create_account(request):
-    return render(request, 'travel_agency/create_account.html')
+    return render(request, 'travel_agency/base_user.html')
 

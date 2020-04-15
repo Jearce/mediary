@@ -5,11 +5,11 @@
     {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.css' %}">
-    <title>{% block title %}Edu Travels!{% endblock %}</title>
+    <title>{% block title %}{% endblock %}</title>
 </head>
 <body>
     <div class="container">
-        {% block header %}<p>Welcome to Edu Travels!</p>{% endblock %}
+        {% block header %}{% endblock %}
 
         {% block sidebar %}
 
@@ -30,11 +30,15 @@
                     <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Account</a>
                     <div class="dropdown-menu">
                         <a class="dropdown-item" href="#">Sign In</a>
-                        <a class="dropdown-item" href="#">Create Account</a>
+                        <a class="dropdown-item" href="create-account">Create Account</a>
                     </div>
                 </li>
             </ul>
         </nav>
+        {% endblock %}
+
+        {% block content %}
+
         {% endblock %}
 
     <script src={% static 'js/jquery.min.js' %}></script>

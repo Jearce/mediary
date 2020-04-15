@@ -17,9 +17,9 @@ from django.contrib import admin
 from django.urls import path,include
 
 urlpatterns = [
-
     path("",include("travel_agency.urls")),
     path("plan",include("travel_agency.urls")),
+    path("sign-in",include("travel_agency.urls")),
     path("create-account",include("travel_agency.urls")),
     path('admin/', admin.site.urls),
 ]
