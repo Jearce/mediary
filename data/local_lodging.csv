@@ -1,0 +1,21 @@
+id,city,type,street_address,zip_code,name,rating
+1,100099,Motel,232 Sauthoff Road,,"Leuschke, Wintheiser and Fisher",2.7
+2,82871,Hotel,624 Anhalt Trail,,Runte-Jacobson,3.6
+3,17180,Hotel,3 School Center,,Hills and Sons,4.2
+4,17180,Hotel,7186 Bellgrove Lane,,Kovacek-Glover,4.4
+5,2945,Hostel,00 Vernon Lane,,"Bode, Wunsch and Johns",2.3
+6,62359,Hotel,15 Erie Hill,,"Effertz, Runte and Padberg",4.4
+7,80896,Hostel,2 North Avenue,,"Zboncak, Gislason and Homenick",3.8
+8,17015,Hotel,71233 Drewry Alley,,Dooley-Botsford,2.8
+9,41220,Hotel,7 Hanson Drive,,"O'Connell, Schultz and Roob",3.7
+10,100099,Hotel,7 Surrey Court,,Wolff-Parker,2.6
+11,60026,Motel,17323 Service Trail,,Schneider Group,3.8
+12,78849,Hostel,21756 Vera Crossing,,Hoppe LLC,3.9
+13,13844,Hostel,73 Sugar Way,,Weimann-Kshlerin,3.9
+14,60026,Motel,714 Brentwood Point,,"Boehm, Casper and Jaskolski",3.5
+15,100099,Hotel,1615 Lerdahl Terrace,,Swaniawski Group,4.1
+16,82871,Hotel,5865 Duke Center,,"Feeney, Ortiz and Brekke",4.9
+17,53430,Motel,424 Packers Court,,"Hartmann, Konopelski and Muller",3.8
+18,100099,Hostel,6438 Dottie Junction,,Cassin Inc,4.2
+19,62359,Hostel,9 Paget Terrace,,Marks-Muller,4.6
+20,2945,Hostel,98 Northfield Alley,,"Terry, Trantow and Bogan",2.1
