@@ -36,11 +36,8 @@ class Country(models.Model):
     Contains the list of Counties
     '''
     name = models.CharField(max_length=80)
-    latitude = models.FloatField()
-    longitude = models.FloatField()
-    primary_language = models.ForeignKey(LanguageCode,on_delete=models.CASCADE)
     capital = models.CharField(max_length=80)
-    hemisphere = models.CharField(max_length=8)
+    currency = models.CharField(max_length=8)
 
     def __str__(self):
         return self.name
