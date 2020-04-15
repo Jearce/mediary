@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import json
 import os
+import csv
 
 import argparse
 
@@ -41,9 +42,12 @@ def csv_to_json(file):
 
     #get records in json format
     records = []
-    for row in csv_file:
-        row = row.replace('\"',"")
-        row = row.strip().split(',')
+    for row in csv.reader(csv_file.readlines(),
+                          quotechar='"',
+                          delimiter=',',
+                          quoting=csv.QUOTE_ALL,skipinitialspace=True
+                          ):
+        print(row)
         record = create_record(model,header,row)
         records.append(record)
 
