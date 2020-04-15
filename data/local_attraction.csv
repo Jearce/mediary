@@ -1,0 +1,21 @@
+id,city,business_type,name,industry,street_address,zip_code,is_active
+1,100099,Business,Bergstrom and Sons,Hospitality,27780 Buell Crossing,5,TRUE
+2,82871,Business,Gibson-Klein,Hospitality,58951 Pine View Way,41,TRUE
+3,17180,Theme Park,Astro Aqua World,,3876 Birchwood Road,13,TRUE
+4,17180,Library,"Aufderhar, Tillman and Kessler",,88801 Blaine Circle,12,FALSE
+5,2945,Business,Turner-Windler,Automotive,21915 Twin Pines Parkway,26,TRUE
+6,62359,Business,Willms-Bayer,Financial,30524 Rigney Junction,3,TRUE
+7,80896,Business,Ledner-Hauck,Financial,39980 Moulton Hill,7,FALSE
+8,17015,Business,Emmerich LLC,Real Estate,467 Farmco Junction,11,FALSE
+9,41220,Business,Boehm and Sons,Automotive,83012 Dorton Way,3,FALSE
+10,100099,Business,"Stehr, Dickinson and Prosacco",Health,10 4th Alley,30,FALSE
+11,60026,Camp Grounds,Manapogo Park,,288 La Follette Pass,45,FALSE
+12,78849,Library,Hauck-Wisozk,,81329 Meadow Vale Center,24,TRUE
+13,13844,Business,Welch LLC,Energy,13 Fisk Crossing,35,TRUE
+14,60026,Business,"Bailey, Rutherford and Lynch",Chemical,9 Esch Point,39,FALSE
+15,100099,Business,Kub-McCullough,Mining,2862 Ridgeview Way,18,FALSE
+16,82871,Business,"Schinner, Bogan and Crona",Chemical,344 Lakeland Point,44,TRUE
+17,53430,Business,"Lemke, Fritsch and Kutch",Real Estate,9595 Alpine Court,32,FALSE
+18,100099,Business,"Dach, Hickle and Hahn",Real Estate,6 West Pass,38,TRUE
+19,62359,Theme Park,Yundt LLC,,5 Heath Parkway,8,FALSE
+20,2945,Camp Grounds,Camp Timber Lake,,70575 Montana Street,6,FALSE

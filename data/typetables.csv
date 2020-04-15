@@ -1,0 +1,13 @@
+﻿id,name,entity
+1,Motel,LocalLodging
+2,Hostel,LocalLodging
+3,Hotel,LocalLodging
+4,Museam,LocalAttraction
+5,Theme Park,LocalAttraction
+6,Library,LocalAttraction
+7,Business,LocalAttraction
+8,Camp Grounds,LocalAttraction
+9,Bus,LocalTransportation
+10,Train,LocalTransportation
+11,Helicopter,LocalTransportation
+12,Boat,LocalTransportation

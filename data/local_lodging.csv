@@ -1,0 +1,21 @@
+id,city,type,street_address,zip_code,name,rating
+1,100099,Motel,232 Sauthoff Road,5,"Leuschke, Wintheiser and Fisher",2.7
+2,82871,Hotel,624 Anhalt Trail,41,Runte-Jacobson,3.6
+3,17180,Hotel,3 School Center,13,Hills and Sons,4.2
+4,17180,Hotel,7186 Bellgrove Lane,12,Kovacek-Glover,4.4
+5,2945,Hostel,00 Vernon Lane,26,"Bode, Wunsch and Johns",2.3
+6,62359,Hotel,15 Erie Hill,3,"Effertz, Runte and Padberg",4.4
+7,80896,Hostel,2 North Avenue,7,"Zboncak, Gislason and Homenick",3.8
+8,17015,Hotel,71233 Drewry Alley,11,Dooley-Botsford,2.8
+9,41220,Hotel,7 Hanson Drive,3,"O'Connell, Schultz and Roob",3.7
+10,100099,Hotel,7 Surrey Court,30,Wolff-Parker,2.6
+11,60026,Motel,17323 Service Trail,45,Schneider Group,3.8
+12,78849,Hostel,21756 Vera Crossing,24,Hoppe LLC,3.9
+13,13844,Hostel,73 Sugar Way,35,Weimann-Kshlerin,3.9
+14,60026,Motel,714 Brentwood Point,39,"Boehm, Casper and Jaskolski",3.5
+15,100099,Hotel,1615 Lerdahl Terrace,18,Swaniawski Group,4.1
+16,82871,Hotel,5865 Duke Center,44,"Feeney, Ortiz and Brekke",4.9
+17,53430,Motel,424 Packers Court,32,"Hartmann, Konopelski and Muller",3.8
+18,100099,Hostel,6438 Dottie Junction,38,Cassin Inc,4.2
+19,62359,Hostel,9 Paget Terrace,8,Marks-Muller,4.6
+20,2945,Hostel,98 Northfield Alley,6,"Terry, Trantow and Bogan",2.1
