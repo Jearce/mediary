@@ -25,6 +25,7 @@ def create_record(model_name,keys,values):
     return record
 
 def csv_to_json(file):
+
     '''
     file: csv file name
 
@@ -32,10 +33,18 @@ def csv_to_json(file):
      writes a json file from a csv file.
 
     '''
+
+    #hold json folders
+    fixtues_folder = '../source/edutravel/travel_agency/fixtures/'
+
     #open csv
     csv_file = open(file)
+
+    if not os.path.isdir(fixtues_folder):
+        os.mkdir(fixtues_folder)
+
     #create json file
-    json_file = open(file.replace('.csv','.json'),'w')
+    json_file = open(fixtues_folder+file.replace('.csv','.json'),'w')
 
     header = csv_file.readline().strip().split(',')
     model = file[:file.find('.')]
@@ -47,7 +56,6 @@ def csv_to_json(file):
                           delimiter=',',
                           quoting=csv.QUOTE_ALL,skipinitialspace=True
                           ):
-        print(row)
         record = create_record(model,header,row)
         records.append(record)
 
