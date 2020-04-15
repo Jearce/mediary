@@ -72,6 +72,7 @@ if __name__ == "__main__":
         for file in args.infiles:
             csv_to_json(file)
     else:
-        for file in os.list():
-            csv_to_json(file)
+        for file in os.listdir():
+            if file.endswith(".csv"):
+                csv_to_json(file)
 
