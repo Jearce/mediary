@@ -5,7 +5,12 @@ from django.http import HttpResponse
 from .models import Country
 
 # Create your views here.
-def index(request):
+def home(request):
     return render(request, 'travel_agency/home.html')
 
+def plan_trip(request):
+    return render(request, 'travel_agency/plan_trip.html')
+
+def create_account(request):
+    return render(request, 'travel_agency/create_account.html')
 
