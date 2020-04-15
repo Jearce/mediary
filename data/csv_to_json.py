@@ -54,12 +54,17 @@ def csv_to_json(file):
     json_file.close()
 
 def get_args():
+    help_text = '''CSV files to be converted to json.
+                   If no files are provided the current working
+                   directory will be searched for any csv files to
+                   covert to json.'''
+
 
     parser = argparse.ArgumentParser(description="Convert CSV to json for Django dumpdata.")
     parser.add_argument('infiles',
                         nargs="*",
-                        help="CSV files to be converted to json.",
-                        metavar="One or more CSV files.",
+                        help=help_text,
+                        metavar="CSV file.",
                         default=None)
 
     args = parser.parse_args()
