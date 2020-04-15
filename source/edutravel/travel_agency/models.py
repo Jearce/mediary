@@ -44,8 +44,6 @@ class Country(models.Model):
 
 class Subdivision(models.Model):
     country = models.ForeignKey(Country,on_delete=models.CASCADE)
-    latitude = models.FloatField()
-    longitude = models.FloatField()
     name = models.CharField(max_length=80)
 
     def __str__(self):
@@ -54,7 +52,7 @@ class Subdivision(models.Model):
 class City(models.Model):
     subdivision = models.ForeignKey(Subdivision, on_delete=models.CASCADE)
     latitude = models.FloatField()
-    longitude = models.FloatField()
+    logitude = models.FloatField()
     name = models.CharField(max_length=120)
 
     def __str__(self):
