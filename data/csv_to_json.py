@@ -43,6 +43,12 @@ def csv_to_json(file):
     #get records in json format
     records = []
     for row in csv_file:
+        if "\"" in row:
+            first = row.find("\"")
+            second = row.find("\"",first+1)
+            unwanted_comma = row.find(",",first,second)
+            row = row.replace("\"",'')
+            row = row[:unwanted_comma] + row[unwanted_comma+1:]
         row = row.strip().split(',')
         record = create_record(model,header,row)
         records.append(record)
