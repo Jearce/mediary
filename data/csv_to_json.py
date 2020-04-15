@@ -16,10 +16,9 @@ def create_record(model_name,keys,values):
     Returns
      A dict representing a record.
     '''
-
     pk = values[0]
     record = {"model":'travel_agency.'+model_name,"pk":pk}
-    fields = {attribute:value for attribute,value in zip(keys[1:],values[1:])}
+    fields = {attribute:value.strip() for attribute,value in zip(keys[1:],values[1:])}
     record['fields'] = fields
 
     return record
@@ -43,12 +42,7 @@ def csv_to_json(file):
     #get records in json format
     records = []
     for row in csv_file:
-        if "\"" in row:
-            first = row.find("\"")
-            second = row.find("\"",first+1)
-            unwanted_comma = row.find(",",first,second)
-            row = row.replace("\"",'')
-            row = row[:unwanted_comma] + row[unwanted_comma+1:]
+        row = row.replace('\"',"")
         row = row.strip().split(',')
         record = create_record(model,header,row)
         records.append(record)
