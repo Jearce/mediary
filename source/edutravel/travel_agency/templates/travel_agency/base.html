@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.css' %}">
+    <title>{% block title %}Edu Travels!{% endblock %}</title>
+</head>
+<body>
+    <div class="container">
+        {% block header %}<p>Welcome to Edu Travels!</p>{% endblock %}
+
+        {% block sidebar %}
+
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="/">Home</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Trip Planning</a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="#">Plan Trip</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#">Request A Proposal</a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Account</a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="#">Sign In</a>
+                        <a class="dropdown-item" href="#">Create Account</a>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+        {% endblock %}
+
+    <script src={% static 'js/jquery.min.js' %}></script>
+    <script src={% static 'js/popper.min.js' %}></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    </div>
+</body>
+</html>
