@@ -6,16 +6,13 @@
 {% block content %}
 {% block country %}
 
-<form method="get" action="">
+<form method="get" action="plan/state-by-country">
  <!-- {% csrf_token %} -->
  {% for country in countries %}
  <input type="radio" name="choice" id="{{ country.name }}" value="{{ country.id }}">
  <label for="{{ country.name }}">{{ country.name }}</label><br>
 {% endfor %}
 <input type='submit' value="Select Country">
-{% if "choice" in request.get_full_path %}<p>Random Text</p>{% endif %}
-
-   
 </form>
 {% endblock %}
 {% endblock %}

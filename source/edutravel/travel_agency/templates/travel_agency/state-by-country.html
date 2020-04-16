@@ -1,0 +1,25 @@
+{% extends "base_trip.html" %}
+{% block content %}
+{% block country %}
+<form>
+ <!-- {% csrf_token %} -->
+ {% for country in countries %}
+ <input type="radio" name="choice" id="{{ country.name }}" value="{{ country.id }}">
+ <label for="{{ country.name }}">{{ country.name }}</label><br>
+{% endfor %}
+<input type='submit' value="Select Country"><br><br>
+{% endblock %}
+</form>
+{% block subdivision %}
+<form method="get" action="/plan/city-by-state/">
+ <!-- {% csrf_token %} -->
+ {% for state in states %}
+ <input type="radio" name="state" id="{{ state.name }}" value="{{ state.id }}">
+ <label for="{{ state.name }}">{{ state.name }}</label><br>
+{% endfor %}
+<input type='submit' value="Select State"><br><br>
+</form>
+{% endblock %}
+{% endblock %}
+
+
