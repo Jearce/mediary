@@ -4,9 +4,9 @@ from . import views
 
 urlpatterns = [
     path("",views.home,name="home"),
-    path("plan",views.plan_trip,name="plan"),
+    path("plan/",views.plan_trip,name='plan'),
+    path("ajax/load-states/",views.load_states,name='ajax_load_states'),
+    path("ajax/load-cities/",views.load_cities,name='ajax_load_cities'),
     path("travler-account",views.create_account,name="create"),
-    path("state-by-country/",views.get_states,name="get_states"),
-    path("city-by-state/",views.get_cities,name="get_cities"),
 ]
 

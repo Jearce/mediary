@@ -1,19 +1,51 @@
-{% extends "base_trip.html" %}
+{% extends "base.html" %}
 
 {% block title %}Trip Planning{% endblock %}
 {% block header %}{% endblock %}
 
 {% block content %}
-{% block country %}
-
-<form method="get" action="plan/state-by-country">
- <!-- {% csrf_token %} -->
- {% for country in countries %}
- <input type="radio" name="choice" id="{{ country.name }}" value="{{ country.id }}">
- <label for="{{ country.name }}">{{ country.name }}</label><br>
-{% endfor %}
-<input type='submit' value="Select Country">
+<h2>Trip Form</h2>
+<form method="post" id="tripForm" data-states-url="{% url 'ajax_load_states' %}" data-cities-url="{% url 'ajax_load_cities' %}" novalidate>
+    {% csrf_token %}
+    <table>
+      {{ form.as_table }}
+    </table>
+    <button type="submit">Save</button>
 </form>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script>
+    $("#id_country").change(function(){
+        var url = $("#tripForm").attr("data-states-url");
+        var countryId = $(this).val();
+        $.ajax({
+            url: url,
+            data: {
+                'country':countryId
+            },
+            success: function (data){
+                $("#id_state").html(data);
+
+            }
+        });
+        
+    });
+
+    $("#id_state").change(function(){
+            var url = $("#tripForm").attr("data-cities-url");
+            var stateId = $(this).val();
+            $.ajax({
+                url: url,
+                data: {
+                    'state':stateId
+                },
+                success: function (data){
+                    $("#id_city").html(data);
+                }
+            });
+            
+        });
+
+</script>
 {% endblock %}
-{% endblock %}
+
 
