@@ -1,18 +1,19 @@
 {% extends "base_trip.html" %}
 
 {% block title %}Trip Planning{% endblock %}
-{% block header %}<p>Plan Trip</p>{% endblock %}
+{% block header %}{% endblock %}
 
 {% block content %}
 {% block country %}
 
 <form method="get" action="">
- {% csrf_token %}
+ <!-- {% csrf_token %} -->
  {% for country in countries %}
- <input type="radio" name="choice" id="{{ country.name }}" value="{{ coountry.id }}">
+ <input type="radio" name="choice" id="{{ country.name }}" value="{{ country.id }}">
  <label for="{{ country.name }}">{{ country.name }}</label><br>
 {% endfor %}
-<input type='submit' value="retrive_state">
+<input type='submit' value="Select Country">
+{% if "choice" in request.get_full_path %}<p>Random Text</p>{% endif %}
 
    
 </form>
