@@ -25,6 +25,7 @@ def get_cities(request):
     return render(request,'travel_agency/city-by-state.html',{'states':states, 'countries':countries,'cities':cities})
 
 def get_local_items(request):
+    cities = City.objects.all()
     guides = LocalGuide.objects.filter(city=request.GET["city"])
     lodging = LocalLodging.objects.filter(city=request.GET["city"])
     transportation = LocalTransportation.objects.filter(city=request.GET["city"])
