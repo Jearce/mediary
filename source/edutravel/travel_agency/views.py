@@ -29,7 +29,7 @@ def get_local_items(request):
     lodging = LocalLodging.objects.filter(city=request.GET["city"])
     transportation = LocalTransportation.objects.filter(city=request.GET["city"])
     attaction = LocalAttraction.objects.filter(city=request.GET["city"])
-    return render(request, 'travel_agency/select-trip-options.html', {''})
+    return render(request, 'travel_agency/select-trip-options.html', {'guides':guides, 'lodging':lodging, 'attaction':attaction, 'transportation':transportation})
 
 def create_account(request):
     return render(request, 'travel_agency/base_user.html')
