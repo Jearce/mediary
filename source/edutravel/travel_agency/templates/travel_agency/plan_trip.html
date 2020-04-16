@@ -1,4 +1,21 @@
-{% extends "base.html" %}
+{% extends "base_trip.html" %}
 
 {% block title %}Trip Planning{% endblock %}
 {% block header %}<p>Plan Trip</p>{% endblock %}
+
+{% block content %}
+{% block country %}
+
+<form method="get" action="">
+ {% csrf_token %}
+ {% for country in countries %}
+ <input type="radio" name="choice" id="{{ country.name }}" value="{{ coountry.id }}">
+ <label for="{{ country.name }}">{{ country.name }}</label><br>
+{% endfor %}
+<input type='submit' value="retrive_state">
+
+   
+</form>
+{% endblock %}
+{% endblock %}
+

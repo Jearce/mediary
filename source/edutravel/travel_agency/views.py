@@ -9,7 +9,8 @@ def home(request):
     return render(request, 'travel_agency/home.html')
 
 def plan_trip(request):
-    return render(request, 'travel_agency/plan_trip.html')
+    countries = Country.objects.all()
+    return render(request, 'travel_agency/plan_trip.html',{'countries':countries})
 
 def create_account(request):
     return render(request, 'travel_agency/base_user.html')
