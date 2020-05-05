@@ -21,7 +21,7 @@
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Trip Planning</a>
                     <div class="dropdown-menu">
-                        <a class="dropdown-item" href="plan">Plan Trip</a>
+											<a class="dropdown-item" href="{% url 'plan' %}">Plan Trip</a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="#">Request A Proposal</a>
                     </div>
@@ -40,18 +40,14 @@
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                            <h5 class="modal-title" id="exampleModalLabel">Traveler or Institute?</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
                         <div class="modal-body">
-                            <a href="traveler-account">Traveler</a>
+													<a href="{% url 'CreateTraveler' %}">Traveler</a>
                             <a href="institute-account">Institute</a>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary">Save changes</button>
                         </div>
                     </div>
                 </div>
@@ -73,6 +69,11 @@
             });
         });
     </script>
+
+	<script>
+		{% block javascript %}
+		{% endblock javascript %}
+	</script>
     </div>
 </body>
 </html>
