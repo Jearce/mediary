@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block content %}
+<table>
+	<tr>
+		<th>Subdivisions</th>
+	</tr>
+	{% for subdivision in subdivisions %}
+	<tr>
+		<td><a href="{% url 'list_cities' subdivision.country.id subdivision.id %}">{{ subdivision.name }}</a></td>
+	</tr>
+	{% endfor %}
+</table>
+{% endblock content %}
