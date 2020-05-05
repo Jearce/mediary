@@ -8,8 +8,11 @@
 <form method="post" id="tripForm" data-states-url="{% url 'ajax_load_states' %}" data-cities-url="{% url 'ajax_load_cities' %}" novalidate>
     {% csrf_token %}
     <table>
-      {{ form.as_table }}
+      {{ form }}
     </table>
+		<div id="id_city">
+			
+		</div>
     <button type="submit">Save</button>
 </form>
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
