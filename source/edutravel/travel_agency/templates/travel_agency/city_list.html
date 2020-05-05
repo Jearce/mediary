@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block content %}
+
+<form id="filterform" filter-by-city-url="{% url 'ajax_load_hotels' %}">
+	<label for='id_city'>Filter by City</label>
+	<select id='id_city' name='city'>
+		{% for city in cities %}
+		<option value="{{ city.pk }}">{{ city.name }}</option>
+		{% endfor %}
+	</select>
+</form>
+
+<table id='hotels'>
+	<tr>
+		<th>Hotels</th>
+		<th>Hotel Rating</th>
+	</tr>
+	{% for hotel in hotels %}
+	<tr>
+		<td>{{ hotel.name }}</a></td>
+		<td>{{ hotel.rating }}</a></td>
+	</tr>
+	{% endfor %}
+</table>
+{% endblock content %}
+
+{% block javascript %}
+	$("#id_city").change(function (){
+		var url = $("#filterform").attr("filter-by-city-url");
+		console.log(url);
+		var cityId  = $(this).val();
+
+		$.ajax({
+			url:url,
+			data: {
+				'city':cityId
+			},
+			success:function (data){
+				$("#hotels").html(data);
+			}
+		});
+	});
+{% endblock javascript %}
