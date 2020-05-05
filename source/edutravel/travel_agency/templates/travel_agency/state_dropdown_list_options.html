@@ -1,4 +1,10 @@
-<option value="">---------</option>
-{% for state in states %}
-<option value="{{ state.pk }}">{{ state.name }}</option>
+<tr>
+	<th>Hotels</th>
+	<th>Hotel Rating</th>
+</tr>
+{% for hotel in hotels %}
+<tr>
+	<td>{{ hotel.name }}</a></td>
+	<td>{{ hotel.rating }}</a></td>
+</tr>
 {% endfor %}
