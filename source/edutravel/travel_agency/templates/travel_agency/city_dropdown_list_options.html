@@ -1,4 +1,11 @@
-<option value="">---------</option>
-{% for city in cities %}
-<option value="{{ city.pk }}">{{ city.name }}</option>
-{% endfor %}
+<table>
+	<tr>
+		<th>Cities</th>
+	</tr>
+	{% for city in cities %}
+	<tr>
+		<td>{{ city.name }}</td>
+		<td>{{ city.logitude }}</td>
+	</tr>
+	{% endfor %}
+</table>
