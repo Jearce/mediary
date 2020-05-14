@@ -1,10 +1,9 @@
+from django.contrib.auth.models import AbstractUser
 from django.db import models
+from users.models import Institute,Traveler
+
 
 class Person(models.Model):
-    '''
-    Parent class Employee,Traveler, and InstituteFaculty.
-
-    '''
     first_name = models.CharField(max_length=80)
     last_name = models.CharField(max_length=80)
     email = models.EmailField()
@@ -16,21 +15,6 @@ class Person(models.Model):
 
     def __str__(self):
         return self.first_name + " " + self.last_name
-
-##################################################
-# The user will base trip on the
-# available local attractions from
-# a given city.
-##################################################
-
-
-#class LanguageCode(models.Model):
-#    name = models.CharField(max_length=80)
-#    short_code = models.CharField(max_length=3)
-#
-#    def __str__(self):
-#        return self.name
-#
 
 class Country(models.Model):
     '''
@@ -111,9 +95,6 @@ class LocalGuide(Person):
     city = models.ForeignKey(City,on_delete=models.CASCADE)
     specialty = models.ForeignKey(GuideSpecialty,on_delete=models.CASCADE)
 
-    def __str__(self):
-        return self.first_name + " " + self.last_name
-
 class LocalTransportation(models.Model):
     city = models.ForeignKey(City, on_delete=models.CASCADE)
     name = models.CharField(max_length=80)
@@ -121,40 +102,8 @@ class LocalTransportation(models.Model):
     close_time = models.TimeField()
     transport_type = models.ForeignKey(TypeTable,on_delete=models.CASCADE, limit_choices_to={'entity':'LocalTransportation'})
 
-##################################################
-# Trip is organized with
-# the following  models.
-##################################################
-
 class Employee(Person):
     '''Employee table'''
-
-class Institute(models.Model):
-    '''
-    Institute can make many bookings and a booking
-    will be for one trip.
-
-    '''
-    name = models.CharField(max_length=50)
-    street_address = models.CharField(max_length=80)
-    city_address = models.CharField(max_length=80)
-    state_address = models.CharField(max_length=80)
-    country_address = models.CharField(max_length=80)
-    institute_type = models.CharField(max_length=80)
-    student_count = models.IntegerField()
-
-    def __str__(self):
-        return self.name
-
-class InstituteType(models.Model):
-    '''
-    Axiliary table for Institute model.
-
-    '''
-    institute_type = models.CharField(max_length=80)
-
-    def __str__(self):
-        return self.institute_type
 
 class Trip(models.Model):
     '''
@@ -164,12 +113,12 @@ class Trip(models.Model):
     '''
     name = models.CharField(max_length=50)
     trip_organizer = models.ForeignKey(Employee,on_delete=models.CASCADE)
-    trip_expense = models.DecimalField(max_digits=6,decimal_places=2)
     start_date = models.DateField()
     end_date = models.DateField()
+    lodging = models.ForeignKey(LocalLodging,on_delete=models.CASCADE)
     institutes = models.ManyToManyField(Institute,through="Booking")
-    cities = models.ManyToManyField(City,through="TripCity")
-    destinations = models.IntegerField()
+    destinations = models.ManyToManyField(LocalAttraction,through="TripDestinations")
+    travelers = models.ManyToManyField(Traveler,through="TripRegistration")
 
     def __str__(self):
         return self.name
@@ -179,7 +128,6 @@ class ExpenseType(models.Model):
     Axiliary table for TripExpense Model.
 
     '''
-
     expense_type = models.CharField(max_length=80)
 
     def __str__(self):
@@ -281,22 +229,11 @@ class Booking(models.Model):
     A booking belongs to a trip.
 
     '''
-    name = models.CharField(max_length=120)
     institute = models.ForeignKey(Institute,on_delete=models.CASCADE)
     trip = models.ForeignKey(Trip,on_delete=models.CASCADE)
-    booking_date = models.DateTimeField()
 
     def __str__(self):
         return self.name
-
-
-class Traveler(Person):
-    '''
-    A trip can have many travelers who register for the trip.
-
-    '''
-    institute = models.ForeignKey(Institute,on_delete=models.CASCADE)
-    trips = models.ManyToManyField(Trip,through="TripRegistration")
 
 
 class TripHistory(models.Model):
@@ -318,88 +255,11 @@ class TripRegistration(models.Model):
 
     '''
     trip = models.ForeignKey(Trip,on_delete=models.CASCADE)
-    travler = models.ForeignKey(Traveler,on_delete=models.CASCADE)
+    traveler = models.ForeignKey(Traveler,on_delete=models.CASCADE)
 
-class Department(models.Model):
-    '''
-    Axiliary table for institute faculty model.
-
-    '''
-    name = models.CharField(max_length=80)
-
-    def __str__(self):
-        return self.name
-
-class InstituteFaculty(Person):
-    '''
-    Child model of traveler
-
-    '''
-    traveler = models.OneToOneField(Traveler,on_delete=models.CASCADE)
-    title = models.CharField(max_length=80)
-    department = models.ForeignKey(Department,on_delete=models.CASCADE)
-
-class Majors(models.Model):
-    '''
-    Axiliary table for student model.
-
-    '''
-    major =  models.CharField(max_length=80)
-
-    def __str__(self):
-        return self.major
-
-class GradeLevel(models.Model):
-    ''' abstracted the grade_level array into another table to meet min table quota '''
-    title = models.CharField(max_length=20)
-    min_credits = models.IntegerField()
-    max_credits = models.IntegerField()
-
-    def __str__(self):
-        return self.title
-
-class Student(Person):
-    '''
-    Child model of traveler.
-
-    '''
-
-    traveler = models.OneToOneField(Traveler,on_delete=models.CASCADE)
-    declared_major = models.ForeignKey(Majors,on_delete=models.CASCADE)
-    grade_level = models.ForeignKey(GradeLevel,on_delete=models.CASCADE)
-
-class TripCity(models.Model):
-    '''
-    Trip can visit a city and will have to choose lodging, local guide,
-    and transportation.
-
-    '''
-    trip = models.ForeignKey(Trip,on_delete=models.CASCADE)
-    city = models.ForeignKey(City, on_delete=models.CASCADE)
-    lodging = models.ForeignKey(LocalLodging, on_delete=models.CASCADE)
-    guide = models.ForeignKey(LocalGuide, on_delete=models.CASCADE)
-    transportation = models.ForeignKey(LocalTransportation, on_delete=models.CASCADE)
-
-#class Itinerary(models.Model):
-    '''
-    Duplicate many to many fields. Itinerary can be a generated table from other tables after user is done
-    selecting options.
-
-    '''
-#    trip = models.ForeignKey(Trip,on_delete=models.CASCADE)
-#    lodging = models.ForeignKey(LocalLodging, on_delete=models.CASCADE)
-#    first_destination = models.ManyToManyField(LocalAttraction, through="AttractionDestination")
-#    first_destination_start_time = models.DateTimeField()
-#    first_destination_end_time = models.DateTimeField()
-#    second_destination = models.ManyToManyField(LocalAttraction, through="AttractionDestination")
-#    second_destination_start_time = models.DateTimeField()
-#    second_destination_end_time = models.DateTimeField()
-#    third_destination = models.ManyToManyField(LocalAttraction, through="AttractionDestination")
-#    third_destination_start_time = models.DateTimeField()
-#    third_destination_end_time = models.DateTimeField()
-
-class AttractionDestination(models.Model):
-    #itenerary = models.ForeignKey(Itinerary, on_delete=models.CASCADE)
-    local_attraction = models.ForeignKey(LocalAttraction, on_delete=models.CASCADE)
+class TripDestinations(models.Model):
+    local_attraction = models.ForeignKey(LocalAttraction,on_delete=models.CASCADE)
+    trip = models.ForeignKey(Trip, on_delete=models.CASCADE)
     start_date = models.DateTimeField()
     end_date = models.DateTimeField()
+
