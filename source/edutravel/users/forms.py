@@ -1,32 +1,38 @@
 from django import forms
-from .models import Trip,TripCity,Country,Subdivision,City
+from django.db import transaction
+from django.contrib.auth.forms import UserCreationForm
 
-class TripForm(forms.Form):
+from .models import Institute,InstituteType,User
 
-    country = forms.ModelChoiceField(queryset=Country.objects.all())
-    state = forms.ModelChoiceField(queryset=Subdivision.objects.all())
-    #city = forms.ModelChoiceField(queryset=City.objects.all())
+class InstituteSignUpForm(UserCreationForm):
 
-    #class Meta:
-    #    model = Trip
-    #    fields = ('name','country','subdivision','city')
+    country_address = forms.CharField(max_length=80)
+    state_address = forms.CharField(max_length=80)
+    city_address = forms.CharField(max_length=80)
+    state_address = forms.CharField(max_length=80)
+    institute_type = forms.ModelChoiceField(
+        queryset=InstituteType.objects.all()
+    )
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['state'].queryset = Subdivision.objects.none()
-        #self.fields['city'].queryset = City.objects.none()
-
-class TravelerForm(forms.Form):
-    first_name = forms.CharField(max_length=80)
-    last_name = forms.CharField(max_length=80)
-    email = forms.EmailField()
-    passport = forms.CharField(max_length=8)
-    phone_number = forms.CharField(max_length=12)
+    class Meta(UserCreationForm.Meta):
+        model = User
 
     def __init__(self, *args, **kwargs):
-        super(TravelerForm,self).__init__(*args, **kwargs)
+        super(InstituteSignUpForm,self).__init__(*args, **kwargs)
         for visible in self.visible_fields():
             visible.field.widget.attrs['class'] = 'form-control'
 
-
+    @transaction.atomic
+    def save(self):
+        user = super().save(commit=False)
+        user.is_institute = True
+        user.save()
+        institute = Institute.objects.create(
+            user=user,
+            country_address=self.cleaned_data.get('country_address'),
+            city_address=self.cleaned_data.get('city_address'),
+            state_address=self.cleaned_data.get('state_address'),
+            institute_type=self.cleaned_data.get('institute_type'),
+        )
+        return user
 
