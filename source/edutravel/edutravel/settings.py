@@ -32,6 +32,8 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'travel_agency.apps.TravelAgencyConfig',
+    'users.apps.UsersConfig',
+    'crispy_forms',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -128,4 +130,10 @@ STATIC_ROOT = os.path.join(BASE_DIR,'root')
 STATICFILES_DIR = [
     os.path.join(BASE_DIR,'/boot'),
 ]
+
+AUTH_USER_MODEL = 'users.User'
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+LOGIN_REDIRECT_URL = "home"
 
